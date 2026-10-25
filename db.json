@@ -1,0 +1,54 @@
+{
+  "menu": [
+    {
+      "id": 1,
+      "name": "Kapeng Barako",
+      "category": "Hot",
+      "price": 95,
+      "image": "images/barako.webp",
+      "available": true
+    },
+    {
+      "id": 2,
+      "name": "Spanish Latte",
+      "category": "Hot",
+      "price": 140,
+      "image": "images/latte.webp",
+      "available": true
+    },
+    {
+      "id": 3,
+      "name": "Iced Americano",
+      "category": "Cold",
+      "price": 120,
+      "image": "images/iced.webp",
+      "available": true
+    },
+    {
+      "id": 4,
+      "name": "Ube Frappe",
+      "category": "Cold",
+      "price": 160,
+      "image": "images/ube.webp",
+      "available": false
+    },
+    {
+      "id": 5,
+      "name": "Ensaymada",
+      "category": "Pastry",
+      "price": 65,
+      "image": "images/ensaymada.webp",
+      "available": true
+    },
+    {
+      "id": 6,
+      "name": "Pandesal Trio",
+      "category": "Pastry",
+      "price": 45,
+      "image": "images/pandesal.webp",
+      "available": true
+    }
+  ],
+  "orders": [],
+  "messages": []
+}

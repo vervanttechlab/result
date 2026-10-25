@@ -1,0 +1,22 @@
+### List all menu items
+GET http://localhost:3000/menu
+
+### Filter by category
+GET http://localhost:3000/menu?category=Hot
+
+### One item
+GET http://localhost:3000/menu/1
+
+### Send a contact message
+POST http://localhost:3000/messages
+Content-Type: application/json
+X-CSRF-Token: test-token
+
+{ "name": "Juan", "email": "juan@example.com", "message": "Open on Sunday?", "date": "2026-10-26T08:00:00.000Z" }
+
+### Place an order (the server must recompute the totals from its own prices)
+POST http://localhost:3000/orders
+Content-Type: application/json
+X-CSRF-Token: test-token
+
+{ "items": [{ "id": 1, "qty": 2 }, { "id": 5, "qty": 1 }], "subtotal": 255, "discount": 0, "total": 255, "pickupName": "Juan", "pickupTime": "10:30", "date": "2026-10-26T08:00:00.000Z" }

@@ -1,0 +1,62 @@
+/* Barako Brew Cafe: only what Bootstrap does not provide.
+   Layout, spacing, forms and responsiveness come from Bootstrap classes in the HTML. */
+:root {
+  --brown: #4b2e1e;
+  --cream: #f8f1e7;
+  --accent: #8a4a14;
+  --accent-dark: #6e3a0f;
+}
+body { background-color: var(--cream); }
+
+/* Brand background (navbar, footer) */
+.bg-coffee { background-color: var(--brown); }
+
+/* Brand buttons, built on Bootstrap's own button variables */
+.btn-coffee {
+  --bs-btn-color: #fff;
+  --bs-btn-bg: var(--accent);
+  --bs-btn-border-color: var(--accent);
+  --bs-btn-hover-color: #fff;
+  --bs-btn-hover-bg: var(--accent-dark);
+  --bs-btn-hover-border-color: var(--accent-dark);
+  --bs-btn-active-color: #fff;
+  --bs-btn-active-bg: var(--accent-dark);
+  --bs-btn-active-border-color: var(--accent-dark);
+  --bs-btn-disabled-color: #fff;
+  --bs-btn-disabled-bg: #777;
+  --bs-btn-disabled-border-color: #777;
+  --bs-btn-focus-shadow-rgb: 138, 74, 20;
+}
+.btn-outline-coffee {
+  --bs-btn-color: var(--brown);
+  --bs-btn-border-color: var(--brown);
+  --bs-btn-hover-color: #fff;
+  --bs-btn-hover-bg: var(--brown);
+  --bs-btn-hover-border-color: var(--brown);
+  --bs-btn-active-color: #fff;
+  --bs-btn-active-bg: var(--brown);
+  --bs-btn-active-border-color: var(--brown);
+  --bs-btn-focus-shadow-rgb: 75, 46, 30;
+}
+
+/* Brand colour for ticked checkboxes */
+.form-check-input:checked { background-color: var(--accent); border-color: var(--accent); }
+
+/* Hero photo with a dark overlay so white text stays readable */
+.hero {
+  background: linear-gradient(rgba(0, 0, 0, .55), rgba(0, 0, 0, .55)),
+              url("../images/hero.webp") center / cover;
+}
+
+/* Anchor links land below the sticky navbar */
+section[id] { scroll-margin-top: 4.5rem; }
+
+/* Card photos keep a 4:3 shape */
+.card-img-top { aspect-ratio: 4 / 3; height: auto; object-fit: cover; }
+
+/* Order lines: fixed-width quantity box, aligned amounts */
+.qty-input { flex: 0 0 3.5rem; text-align: center; }
+.cart-amount { display: inline-block; min-width: 6.5rem; font-variant-numeric: tabular-nums; }   /* inline-block: min-width works */
+
+/* Budget picks card width */
+.picks { max-width: 32rem; }

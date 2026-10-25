@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Barako Brew Cafe menu and online ordering">
+  <!-- CSP: only our own files and the Cloudflare CDN (Vue.js) may run; the page may call the local API on port 3000 -->
+  <meta http-equiv="Content-Security-Policy"
+        content="default-src 'self'; script-src 'self' https://cdnjs.cloudflare.com; connect-src 'self' http://localhost:3000; img-src 'self' data:; style-src 'self'; object-src 'none'; base-uri 'self'; form-action 'self'">
+  <title>Barako Brew Cafe</title>
+  <!-- Bootstrap 5.3.3, local copy (works offline); our own CSS after it so it can override -->
+  <link rel="stylesheet" href="vendor/bootstrap/css/bootstrap.min.css">
+  <link rel="stylesheet" href="css/style.css">
+  <script src="vendor/bootstrap/js/bootstrap.bundle.min.js" defer></script>
+  <script src="js/app.js" defer></script>
+  <!-- Vue.js from the Cloudflare CDN; js/vue-app.js loads vendor/vue.global.prod.js if the CDN is unreachable (offline) -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/vue/3.4.38/vue.global.prod.js" defer></script>
+  <script src="js/vue-app.js" defer></script>
+</head>
+<body>
+  <a class="visually-hidden-focusable" href="#main">Skip to content</a>
+
+  <!-- Bootstrap navbar: links collapse behind the toggler below 768px (navbar-expand-md) -->
+  <header class="sticky-top">
+    <nav class="navbar navbar-expand-md navbar-dark bg-coffee" aria-label="Main">
+      <div class="container">
+        <a class="navbar-brand" href="#home"><img src="images/logo.webp" alt="Barako Brew Cafe" width="120" height="40"></a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#site-nav"
+                aria-controls="site-nav" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="site-nav">
+          <ul class="navbar-nav ms-auto">
+            <li class="nav-item"><a class="nav-link" href="#menu">Menu</a></li>
+            <li class="nav-item"><a class="nav-link" href="#picks">Budget picks</a></li>
+            <li class="nav-item"><a class="nav-link" href="#contact">Contact</a></li>
+            <li class="nav-item"><a class="nav-link" href="#order">Cart <span class="badge text-bg-light" id="cart-count">0</span></a></li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+  </header>
+
+  <main id="main">
+    <!-- Hero: one column on phones; text takes 7 of 12 columns from 768px -->
+    <section id="home" class="hero text-white">
+      <div class="container py-5">
+        <div class="row">
+          <div class="col-md-7 py-md-5 text-center text-md-start">
+            <h1 class="display-5 fw-bold">Brewed in Batangas</h1>
+            <p class="lead">Strong barako coffee and fresh pastries.</p>
+            <a href="#menu" class="btn btn-coffee btn-lg">Order now</a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Menu: search and filters side by side from 768px; cards 1 / 2 / 3 per row -->
+    <section id="menu" class="container py-5" aria-labelledby="menu-title">
+      <h2 id="menu-title" class="mb-4">Our Menu</h2>
+      <div class="row g-3 align-items-end mb-4">
+        <div class="col-12 col-md-5">
+          <label for="search" class="form-label">Search the menu</label>
+          <input type="search" id="search" class="form-control" maxlength="30" autocomplete="off">
+        </div>
+        <div class="col-12 col-md-7 d-flex justify-content-md-end">
+          <div class="btn-group flex-wrap" role="group" aria-label="Filter by category">
+            <button type="button" class="btn btn-outline-coffee filter active" data-category="All" aria-pressed="true">All</button>
+            <button type="button" class="btn btn-outline-coffee filter" data-category="Hot" aria-pressed="false">Hot</button>
+            <button type="button" class="btn btn-outline-coffee filter" data-category="Cold" aria-pressed="false">Cold</button>
+            <button type="button" class="btn btn-outline-coffee filter" data-category="Pastry" aria-pressed="false">Pastry</button>
+          </div>
+        </div>
+      </div>
+      <p id="menu-status" role="status"></p>
+      <div id="menu-grid" class="row g-4"></div>
+    </section>
+
+    <!-- Order: lines (8 of 12 columns) and summary card (4 of 12) side by side from 992px -->
+    <section id="order" class="bg-body-tertiary py-5" aria-labelledby="order-title">
+      <div class="container">
+        <h2 id="order-title" class="mb-4" tabindex="-1">Your order</h2>
+        <div class="row g-4">
+          <div class="col-lg-8">
+            <p id="cart-empty" class="text-body-secondary">Your order is empty. Add items from the menu.</p>
+            <ul id="cart-lines" class="list-group"></ul>
+          </div>
+          <div class="col-lg-4">
+            <aside class="card" aria-labelledby="summary-title">
+              <div class="card-body">
+                <h3 id="summary-title" class="h5 card-title">Summary</h3>
+                <div class="form-check mb-3">
+                  <input class="form-check-input" type="checkbox" id="discount">
+                  <label class="form-check-label" for="discount">Senior citizen / PWD discount (20% off)</label>
+                </div>
+                <dl class="row mb-3">
+                  <dt class="col-6 fw-normal">Subtotal</dt><dd class="col-6 text-end" id="subtotal">PHP 0.00</dd>
+                  <dt class="col-6 fw-normal">Discount</dt><dd class="col-6 text-end" id="discount-amount">- PHP 0.00</dd>
+                  <dt class="col-6 fs-5">Total</dt><dd class="col-6 text-end fs-5 fw-bold" id="total">PHP 0.00</dd>
+                </dl>
+                <button type="button" class="btn btn-coffee w-100" id="checkout-btn" disabled>Checkout</button>
+              </div>
+            </aside>
+            <p id="order-status" class="mt-3" role="status" tabindex="-1"></p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="picks" class="container py-5" aria-labelledby="picks-title">
+      <h2 id="picks-title" class="mb-4">Budget picks</h2>
+      <!-- Filled by the Vue.js app in js/vue-app.js -->
+      <div id="budget-picks"><p>Loading...</p></div>
+    </section>
+
+    <!-- Contact: a narrow centred form (8 of 12 columns, then 6 of 12) -->
+    <section id="contact" class="container py-5" aria-labelledby="contact-title">
+      <div class="row justify-content-center">
+        <div class="col-md-8 col-lg-6">
+          <h2 id="contact-title" class="mb-4">Contact Us</h2>
+          <form id="contact-form" novalidate>
+            <input type="hidden" id="csrf-token" name="csrfToken">
+            <div class="mb-3">
+              <label for="name" class="form-label">Name</label>
+              <input id="name" type="text" class="form-control" maxlength="50" autocomplete="name" required aria-describedby="name-error">
+              <div id="name-error" class="invalid-feedback">Enter your name.</div>
+            </div>
+            <div class="mb-3">
+              <label for="email" class="form-label">Email</label>
+              <input id="email" type="email" class="form-control" maxlength="100" autocomplete="email" required aria-describedby="email-error">
+              <div id="email-error" class="invalid-feedback">Enter a valid email address, e.g. juan@example.com.</div>
+            </div>
+            <div class="mb-3">
+              <label for="message" class="form-label">Message</label>
+              <textarea id="message" class="form-control" rows="4" maxlength="500" required aria-describedby="message-error"></textarea>
+              <div id="message-error" class="invalid-feedback">Write at least 5 characters.</div>
+            </div>
+            <div class="form-check mb-3">
+              <input id="consent" type="checkbox" class="form-check-input" required aria-describedby="consent-error">
+              <label for="consent" class="form-check-label">I agree that Barako Brew may use my details only to reply to me (RA 10173).</label>
+              <div id="consent-error" class="invalid-feedback">Tick the box so we may reply to you.</div>
+            </div>
+            <button type="submit" class="btn btn-coffee">Send</button>
+            <p id="form-status" class="mt-3" role="status"></p>
+          </form>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- Bootstrap modal for checkout (opened from js/app.js) -->
+  <div class="modal fade" id="checkout" tabindex="-1" aria-labelledby="checkout-title">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <form id="checkout-form" novalidate>
+          <div class="modal-header">
+            <h2 class="modal-title fs-5" id="checkout-title">Confirm your order</h2>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+            <ul id="checkout-summary" class="list-unstyled mb-2"></ul>
+            <p id="checkout-total" class="fw-bold"></p>
+            <div class="mb-3">
+              <label for="pickup-name" class="form-label">Name for pickup</label>
+              <input id="pickup-name" type="text" class="form-control" maxlength="50" autocomplete="name" required aria-describedby="pickup-name-error">
+              <div id="pickup-name-error" class="invalid-feedback">Enter the name for pickup.</div>
+            </div>
+            <div class="mb-3">
+              <label for="pickup-time" class="form-label">Pickup time today (7:00&ndash;21:00, at least 15 minutes from now)</label>
+              <input id="pickup-time" type="time" class="form-control" min="07:00" max="21:00" required aria-describedby="pickup-time-error">
+              <div id="pickup-time-error" class="invalid-feedback">Choose a pickup time.</div>
+            </div>
+            <p id="checkout-status" class="mb-0" role="status"></p>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Cancel</button>
+            <button type="submit" class="btn btn-coffee">Confirm order</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <!-- Footer: stacked on phones, two columns from 768px -->
+  <footer class="bg-coffee text-white py-4">
+    <div class="container">
+      <div class="row g-2 text-center text-md-start">
+        <div class="col-md-6"><p class="mb-0">123 Rizal St., Lipa City, Batangas</p></div>
+        <div class="col-md-6 text-md-end"><p class="mb-0">Open 7:00&ndash;21:00 &middot; &copy; 2026 Barako Brew Cafe</p></div>
+      </div>
+    </div>
+  </footer>
+</body>
+</html>
